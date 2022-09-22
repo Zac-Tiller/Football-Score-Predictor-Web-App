@@ -1,6 +1,6 @@
 import streamlit as st
 import seaborn as sns
-from MC_Score_Predictor import MonteCarloMatchSim, buildScoreMatrix, print_results
+from MC_Score_Predictor import MonteCarloMatchSim, buildScoreMatrix
 
 
 header = st.container()
@@ -31,7 +31,7 @@ def ML_scores(score_matrix, MC_Score_tracker):
             remove_max_score(MC_score_tracker, ML_score)
             ML_score = max_likelihood_score(MC_score_tracker)
         ML_percent = max_likelihood_percent(MC_score_tracker)
-        ML_score_dict[ML_score] = ML_percent
+        ML_score_dict[ML_score] = ML_percent/10000
 
     print(ML_score_dict)
     return ML_score_dict
@@ -48,9 +48,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-prem_teams = ['Arsenal', 'Tottenham', 'Liverpool', 'Manchester United', 'Manchester City', 'Chelsea',
-              'West Ham United', 'Wolverhampton Wanderers', 'Brighton', 'Leicester', 'Nottingham Forest', 'Aston Villa',
-              'Crystal Palace', 'Bournemouth', 'Leeds', 'Brentford', 'Everton', 'Newcastle', 'Fulham', 'Southampton' ]
+prem_teams = ['Arsenal', 'Aston Villa', 'Bournemouth', 'Brentford', 'Brighton', 'Chelsea', 'Crystal Palace', 'Everton',
+              'Fulham', 'Leicester', 'Leeds', 'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
+              'Nottingham Forest', 'Southampton', 'Tottenham', 'West Ham', 'Wolverhampton Wanderers']
 
 with header:
     st.title('Welcome to Monte Carlo Bivariate Poisson Match Predictor !')
@@ -66,7 +66,7 @@ with stats_selector:
 
     lookback_col, goal_type_col = st.columns(2)
 
-    games_lookback = lookback_col.slider('How Many Games Shall We LookBack?', min_value=1, max_value=6)
+    games_lookback = lookback_col.slider('How Many Games Shall We LookBack?', min_value=2, max_value=6)
     goal_type = goal_type_col.selectbox('Calculate Goal Rate Based on G or xG?', options=['G', 'xG'], index=0)
 
 teams = [home_team, away_team]
@@ -82,45 +82,8 @@ else:
     display_button = True
 
 col1, simulation_engine, col3 = st.columns(3)
-#
-# with col1:
-#     pass
-# with col2:
-#     pass
-# with col4:
-#     pass
-# with col5:
-#     pass
+
 with simulation_engine:
-#
-#     if display_button:
-#         # Button to run the monte carlo match sim
-#         # ilk
-#         button_pressed = st.button('Run Simulation')
-#
-#         MC_score_tracker = {}
-#         x = []
-#         y = []
-#
-#         if button_pressed:
-#             st.text('Running Simulation ...')
-#             home_win_prob, away_win_prob, draw_prob, MC_score_tracker, x, y = MonteCarloMatchSim(teams, 1000000, GamesLookback=int(glb), BaseOnxG=use_xg)
-#             display_button = False
-#
-#     if button_pressed:
-#         with score_probabilities:
-#             score_matrix = buildScoreMatrix(MC_score_tracker, teams, x, y)
-#
-#             st.subheader('Overall Score Probabilities: ')
-#             st.dataframe(data=score_matrix)
-#
-#             home_win_row = st.container()
-#             away_win_row = st.container()
-#             draw_row = st.container()
-#
-#             home_win_row.markdown('{} Win Percentage = {} %'.format(home_team, round(home_win_prob, 1)))
-#             away_win_row.markdown('{} Win Percentage Likelihood = {} %'.format(away_team, round(away_win_prob, 1)))
-#             draw_row.markdown('Draw Percentage Likelihood = {} %'.format(round(draw_prob, 1)))
 
     run_button = st.empty()
     with run_button.container():
@@ -159,7 +122,10 @@ with simulation_engine:
                 most_likely_score, second_likely_score, third_likely_score = st.columns(3)
                 ML_score_dict = ML_scores(score_matrix, MC_score_tracker)
 
-                most_likely_score.markdown('**Most** Likely Score - {}'.format(list(ML_score_dict.keys())[0]))
-                second_likely_score.markdown('**2nd** Most Likely Score - {}'.format(list(ML_score_dict.keys())[1]))
-                third_likely_score.markdown('**3rd** Most Likely Score - {}'.format(list(ML_score_dict.keys())[2]))
+                most_likely_score.markdown('**Most** Likely Score - {}: {} %'.format(list(ML_score_dict.keys())[0],
+                                                                                   round(list(ML_score_dict.values())[0], 2)))
+                second_likely_score.markdown('**2nd** Likeliest Score - {}: {} %'.format(list(ML_score_dict.keys())[1],
+                                                                                    round(list(ML_score_dict.values())[1], 2)))
+                third_likely_score.markdown('**3rd** Likeliest Score - {}: {} %'.format(list(ML_score_dict.keys())[2],
+                                                                                    round(list(ML_score_dict.values())[2], 2)))
 

@@ -2,29 +2,25 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-#from pandas.table.plotting import table  # EDIT: see deprecation warnings below
 
 from Understat_API_Data_Collection import *
 from math import comb
 from random import choices
-#import dataframe_image as dfi
-
 
 # Workflow.
 # get input of the 2 teams which are playing
 #
 # connects to API and get league table for each match day up to now
-# for each team, calculate the vector of xG weightings & build the xG vector for each matchday
+#
+# for each team, calculate the vector of (x)G weightings & build the (x)G vector for each matchday
 # calculate weighted xG sum average
 # feed into monte carlo model & run -> do rest of calculations
 
-
+# Good Paper I found on BivPo modelling:
 # https://www.jstor.org/stable/4128211?saml_data=eyJzYW1sVG9rZW4iOiIyNGM4MmRkMy03MjdiLTRjNzUtODFkNS1mNWQ0ZTUyZmNiNjQiLCJlbWFpbCI6InptaHQyQGNhbS5hYy51ayIsImluc3RpdHV0aW9uSWRzIjpbIjNhMWY4MjRiLWUzNzUtNDQ3Mi05YTc3LTg4NmMyODA3OTJiOCJdfQ&seq=10#metadata_info_tab_contents
 
+#TODO: Improvements; Met Hastings MC sampling? Create own markov chain for win-draw-loss sequences?
 
-#TODO: Improvements; Met Hastings MC sampling?
-
-#Third Term is the covariance; measure of dependence between the two random variables. can be though of match conditions,
 def BivariatePoissonProb(x, y, l1, l2, l3):
     '''
     This function implements the bivariate poisson probability distribution
@@ -33,10 +29,10 @@ def BivariatePoissonProb(x, y, l1, l2, l3):
     :param y: away goals scored
     :param l1: average predicted home goals scored
     :param l2: average predicted away goals scored
-    :param l3: covariance between average goal predictions
+    :param l3: covariance between average goal predictions - can be thought of as 'match speed/conditions'
+                higher l3 value results in a higher scoring game
     :return: a probability for that scoreline, given by the bivariate poisson distribution
     '''
-
 
     summation_term = 0
     for i in range(min(x,y) + 1):
@@ -49,7 +45,7 @@ def BivariatePoissonProb(x, y, l1, l2, l3):
 # function to generate the probability distribution for home_Gf and away_Gf (and l3), then sample from it to get integers
 def GenerateProbDistr(l1, l2, l3):
     '''
-    This function generates a probability distribution for each scoreline up to
+    This function generates a probability distribution for each scoreline up to 6-6
 
     :param l1: the Predicted Home Goals Scored
     :param l2: the Predicted Away Goals Scored
@@ -86,34 +82,9 @@ def buildScoreMatrix(MC_score_tracker, teams, x, y):
     for score, frequency in MC_score_tracker.items():
         score_matrix.loc[(teams[0], score[0])][(teams[1], score[1])] = round(float((frequency / np.sum(list(MC_score_tracker.values())))*100), 3)
 
-
     print(score_matrix)
     SM = score_matrix.droplevel(level=0, axis=0)
     SM = SM.droplevel(level=0, axis=1)
-
-    SM_arr = np.array(SM)
-
-    # print(SM_arr)
-    # plt.figure(1)
-    # score_matrix.style.background_gradient(cmap='Greens')
-    # score_matrix.export
-
-    # plt.show()
-
-    # fig, axs = plt.subplots(1, 1)
-    # data = SM_arr
-    # the_table = axs.table(cellText=data, colLabels=x, rowLabels=y, loc='center')
-    # #the_table.show()
-    # plt.savefig(the_table, 'testtest.png')
-
-
-
-    # plt.imshow(SM, cmap="RdYlBu")
-    # plt.xticks(range(len(SM)), SM.columns)
-    # plt.yticks(range(len(SM)), SM.index)
-
-    # sns.heatmap(SM_arr)
-    # plt.show()
 
     return score_matrix
 
@@ -179,7 +150,7 @@ def MonteCarloMatchSim(teams, iterations, GamesLookback, BaseOnxG):
     l3 = goal_covariance
     print('cov BEFORE condition: {}'.format(l3))
 
-    l3 = 0.4 if l3 > 0.5 else l3
+    l3 = 0.4 if (l3 > 0.5 or l3 == float('NaN')) else l3
 
     print('\n')
     print('Got Weighted Goals... Now Running Monte Carlo Simulation')
