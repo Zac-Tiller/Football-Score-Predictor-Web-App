@@ -150,7 +150,7 @@ def MonteCarloMatchSim(teams, iterations, GamesLookback, BaseOnxG):
     l3 = goal_covariance
     print('cov BEFORE condition: {}'.format(l3))
 
-    l3 = 0.4 if (l3 > 0.5 or l3 == float('NaN')) else l3
+    l3 = 0.3 if (l3 > 0.3 or l3 == float('NaN')) else l3
 
     print('\n')
     print('Got Weighted Goals... Now Running Monte Carlo Simulation')
