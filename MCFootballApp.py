@@ -115,7 +115,7 @@ with simulation_engine:
 
             fig, ax = plt.subplots()
             sns.heatmap(score_matrix, annot=True, linewidth=.5, cmap='OrRd', ax=ax)
-            st.write(fig)
+            st.pyplot(fig)
 
 
             # st.dataframe(data=score_matrix.style.background_gradient(cmap ='OrRd'))
