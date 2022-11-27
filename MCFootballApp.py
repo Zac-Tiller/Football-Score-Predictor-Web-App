@@ -105,7 +105,7 @@ with simulation_engine:
             score_matrix = buildScoreMatrix(MC_score_tracker, teams, x, y)
 
             st.markdown('Goal Rate Parameters:')
-            ht_param, at_param = st.columns()
+            ht_param, at_param = st.columns(2)
             ht_param.markdown('{} Goal Rate Param: {}'.format(home_team, HT_GR))
             at_param.markdown('{} Goal Rate Param: {}'.format(home_team, AT_GR))
 
