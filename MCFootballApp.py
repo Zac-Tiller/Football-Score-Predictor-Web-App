@@ -55,7 +55,7 @@ with header:
     st.title('Welcome to Monte Carlo Bivariate Poisson Match Predictor !')
 
 with team_selector:
-    st.markdown('** - NOTE - first simulation is slow, as we have to connects to the API to update the stats, but subsequent runs are faster!')
+    st.markdown('** - NOTE - first simulation is slow, as we have to connect to the API to update the stats, but subsequent runs are faster! **')
     st.markdown('**Choose the Home Team and Away Team from the dropdown:**')
     home_col, away_col = st.columns(2)
     home_team = home_col.selectbox('Home Team:', options=prem_teams, index=0)

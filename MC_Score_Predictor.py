@@ -150,7 +150,7 @@ def MonteCarloMatchSim(teams, iterations, GamesLookback, BaseOnxG):
     l3 = goal_covariance
     print('cov BEFORE condition: {}'.format(l3))
 
-    l3 = 0.3 if (l3 > 0.3 or l3 == float('NaN')) else l3
+    l3 = 0.1 #if (l3 > 0.3 or l3 == float('NaN')) else l3
 
     print('\n')
     print('Got Weighted Goals... Now Running Monte Carlo Simulation')
@@ -217,7 +217,7 @@ def master():
 
     print('TODO: Change teh file location of the pickled date object')
 
-#master()
+master()
 
 
 # TODO: Add a Home Advantage term to the goal parameter of each team.
