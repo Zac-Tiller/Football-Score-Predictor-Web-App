@@ -11,4 +11,4 @@ This project involves:
 - A CLI to interact with the program and display the results
 - And finally, an **interactive web app** which anyone can access, via the URL, which was my first time using streamlit!
 
-[Access the web app here](https://zac-tiller-football-streamlit-page-mcfootballapp-j9xq66.streamlitapp.com/)
+[Access the web app here](https://zac-tiller-football-streamlit-page-mcfootballapp-f8efjr.streamlit.app/)
