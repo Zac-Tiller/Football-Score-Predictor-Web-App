@@ -1,6 +1,7 @@
 import streamlit as st
 import seaborn as sns
 from MC_Score_Predictor import MonteCarloMatchSim, buildScoreMatrix
+import matplotlib.pyplot as plt
 
 header = st.container()
 team_selector = st.container()
@@ -106,12 +107,18 @@ with simulation_engine:
 
             st.markdown('** Calculated Goal Rate Parameters: **')
             ht_param, at_param = st.columns(2)
-            ht_param.markdown('**{}** Goal Rate Param: {}'.format(home_team, round(HT_GR, 2)))
-            at_param.markdown('**{}** Goal Rate Param: {}'.format(away_team, round(AT_GR, 2)))
+            ht_param.markdown('**{}** Goal Rate Param: {}'.format(home_team, round(HT_GR, 3)))
+            at_param.markdown('**{}** Goal Rate Param: {}'.format(away_team, round(AT_GR, 3)))
 
 
             st.subheader('Overall Score Probabilities: ')
-            st.dataframe(data=score_matrix.style.background_gradient(cmap ='OrRd'))
+
+            fig, ax = plt.subplots()
+            sns.heatmap(score_matrix, annot=True, linewidth=.5, cmap='OrRd', ax=ax)
+            st.write(fig)
+
+
+            # st.dataframe(data=score_matrix.style.background_gradient(cmap ='OrRd'))
 
             #st.dataframe(score_matrix.apply(back_grad))
 
