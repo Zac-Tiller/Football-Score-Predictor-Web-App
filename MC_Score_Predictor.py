@@ -217,7 +217,7 @@ def master():
 
     print('TODO: Change teh file location of the pickled date object')
 
-master()
+# master()
 
 
 # TODO: Add a Home Advantage term to the goal parameter of each team.
