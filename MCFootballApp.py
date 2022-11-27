@@ -114,7 +114,7 @@ with simulation_engine:
             st.subheader('Overall Score Probabilities: ')
 
             fig = plt.figure()
-            sns.heatmap(fig)
+            sns.heatmap(fig, ax = ax)
             st.pyplot(fig)
 
             # sns.heatmap(score_matrix, annot=True, linewidth=.5, cmap='OrRd', ax=ax)
