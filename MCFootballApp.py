@@ -113,14 +113,14 @@ with simulation_engine:
 
             st.subheader('Overall Score Probabilities: ')
 
-            fig, ax = plt.subplots()
-            sns.heatmap(fig, ax=ax)
-            st.pyplot(fig)
-
-            # sns.heatmap(score_matrix, annot=True, linewidth=.5, cmap='OrRd', ax=ax)
+            # fig, ax = plt.subplots()
+            # sns.heatmap(fig, ax=ax)
             # st.pyplot(fig)
+            #
+            # # sns.heatmap(score_matrix, annot=True, linewidth=.5, cmap='OrRd', ax=ax)
+            # # st.pyplot(fig)
 
-
+            st.dataframe(score_matrix.style.apply(lambda x: "background-color: red"))
             # st.dataframe(data=score_matrix.style.background_gradient(cmap ='OrRd'))
 
             #st.dataframe(score_matrix.apply(back_grad))
