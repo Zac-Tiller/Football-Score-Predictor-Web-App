@@ -86,7 +86,7 @@ def buildScoreMatrix(MC_score_tracker, teams, x, y):
     SM = score_matrix.droplevel(level=0, axis=0)
     SM = SM.droplevel(level=0, axis=1)
 
-    return score_matrix
+    return SM # score_matrix
 
 def print_results(func, teams):
     home_win_prob, away_win_prob, draw_prob, MC_score_tracker, x, y = func
