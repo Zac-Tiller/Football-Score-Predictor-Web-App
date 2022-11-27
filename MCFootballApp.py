@@ -95,7 +95,7 @@ with simulation_engine:
             if submit:
                 run_button.empty()
 
-            home_win_prob, away_win_prob, draw_prob, MC_score_tracker, x, y = MonteCarloMatchSim(teams, 1000000, GamesLookback=int(glb), BaseOnxG=use_xg)
+            home_win_prob, away_win_prob, draw_prob, MC_score_tracker, x, y, HT_GR, AT_GR = MonteCarloMatchSim(teams, 1000000, GamesLookback=int(glb), BaseOnxG=use_xg)
 
     if submit:
         sim_end_msg = '<p style="font-family:Arial; color:Red; font-size: 14px;">Simulation Completed. Select New Teams, or Change Goal Parameter Settings to Run Again!</p>'
@@ -103,6 +103,12 @@ with simulation_engine:
 
         with score_probabilities:
             score_matrix = buildScoreMatrix(MC_score_tracker, teams, x, y)
+
+            st.markdown('Goal Rate Parameters:')
+            ht_param, at_param = st.columns()
+            ht_param.markdown('{} Goal Rate Param: {}'.format(home_team, HT_GR))
+            at_param.markdown('{} Goal Rate Param: {}'.format(home_team, AT_GR))
+
 
             st.subheader('Overall Score Probabilities: ')
             st.dataframe(data=score_matrix)

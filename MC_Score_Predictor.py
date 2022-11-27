@@ -185,7 +185,7 @@ def MonteCarloMatchSim(teams, iterations, GamesLookback, BaseOnxG):
     most_recent_run = pd.Timestamp.today()
     pickle.dump(most_recent_run, open('MostRecentRun.p', 'wb'))
 
-    return home_win_prob, away_win_prob, draw_prob, MC_score_tracker, x, y
+    return home_win_prob, away_win_prob, draw_prob, MC_score_tracker, x, y, avg_weighted_goals_HomeTeam, avg_weighted_goals_AwayTeam
 
     #present scores in a nice matrix of probabilities
     #convert to odds
